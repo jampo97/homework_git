@@ -2,11 +2,11 @@ from masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(user_input: str) -> str:
-    """функция маскировки введенных данных (счета или номера карты)"""
+    """Функция маскировки введенных данных (счета или номера карты)"""
 
     masked_account_card: str = ""
     card_or_account: str = account_or_card(user_input)[0]  # результат проверки - карта/счет
-    count_numbers: int = account_or_card(user_input)[1]  # количество цифр в вводе пользователя
+    count_numbers: int = account_or_card(user_input)[1]  # количество цифр во вводе пользователя
 
     if card_or_account == "card":
         user_input_card_number = user_input[-count_numbers:]
@@ -22,14 +22,14 @@ def mask_account_card(user_input: str) -> str:
 
 
 def account_or_card(user_input: str) -> list:
-    """функция определяющая что введено - карта или счет и подсчет цифр в вводе"""
+    """Функция определяющая, что введено - карта или счет и подсчет цифр во вводе"""
 
     card_or_account: str = "error"
     counter: int = 0
     count_num_in_account: int = 20
     count_num_in_card: int = 16
 
-    for item in user_input:  # счетчик количества цифр в вводе
+    for item in user_input:  # счетчик количества цифр во вводе
         if item.isnumeric():
             counter += 1
 
@@ -45,7 +45,7 @@ def account_or_card(user_input: str) -> list:
 
 
 def get_date(input_date: str) -> str:
-    """форматирование данных о дате в формат ДД.ММ.ГГГГ"""
+    """Форматирование данных о дате в формат ДД.ММ.ГГГГ"""
 
     date_format: str = ""
     year: str = input_date[0:4]

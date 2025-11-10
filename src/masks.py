@@ -18,7 +18,7 @@ def get_mask_card_number(user_input_card_number: str) -> str:
             masked_card_number += num
             continue
 
-        if counter > (len_card - end_num):  # показываем пеоследние цифры
+        if counter > (len_card - end_num):  # показываем последние цифры
             masked_card_number += num
             continue
 
@@ -39,7 +39,7 @@ def get_mask_account(user_input_account: str) -> str:
 
         counter += 1
 
-        if counter > (len_account - end_num):  # показываем пеоследние цифры
+        if counter > (len_account - end_num):  # показываем последние цифры
             masked_account += num
             continue
 
