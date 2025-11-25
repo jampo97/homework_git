@@ -2,6 +2,8 @@ def filter_by_state(all_dicts: list[dict], state_filter: str | None = "EXECUTED"
     """Функция фильтрации по состоянию(state)"""
 
     filtered_all_dicts: list[dict] = []
+    if state_filter is None:
+        state_filter = "EXECUTED"
 
     for person in all_dicts:
         if person["state"] == state_filter:
@@ -14,6 +16,9 @@ def sort_by_date(all_dicts: list[dict], sorting_rule: bool | None = True) -> lis
     """Функция сортировки по дате. По умолчанию - возрастание"""
 
     sorted_list: list[dict] = []
+
+    if sorting_rule is None:
+        sorting_rule = True
 
     if sorting_rule is True:
         sorted_list = sorted(all_dicts, key=lambda x: x["date"], reverse=False)

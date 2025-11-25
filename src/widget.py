@@ -1,4 +1,4 @@
-from masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(user_input: str) -> str:
@@ -14,8 +14,8 @@ def mask_account_card(user_input: str) -> str:
         masked_account_card = user_input[:-count_numbers] + masked_number
 
     if card_or_account == "account":
-        user_input_account_number = user_input[-count_numbers:]
-        masked_number = get_mask_account(user_input_account_number)
+        user_input_account = user_input[-count_numbers:]
+        masked_number = get_mask_account(user_input_account)
         masked_account_card = user_input[:-count_numbers] + masked_number
 
     return masked_account_card
@@ -24,7 +24,7 @@ def mask_account_card(user_input: str) -> str:
 def account_or_card(user_input: str) -> list:
     """Функция определяющая, что введено - карта или счет и подсчет цифр во вводе"""
 
-    card_or_account: str = "error"
+    card_or_account: str = ""
     counter: int = 0
     count_num_in_account: int = 20
     count_num_in_card: int = 16
@@ -33,13 +33,20 @@ def account_or_card(user_input: str) -> list:
         if item.isnumeric():
             counter += 1
 
-    if counter == count_num_in_card:  # 1 условие проверки для карты
-        card_or_account = "card"
-    elif counter == count_num_in_account and "Счет" in user_input:  # 2 условия проверки для счета
+    if counter == count_num_in_account:  # 1 условие проверки для корректного ввода номера счета
         card_or_account = "account"
+        if "Счет" not in user_input:  # 2 условие проверки для ввода слова "Счет"
+            raise ValueError("Пожалуйста, укажите слово __Счет__ в начале")
 
-    else:
-        card_or_account = "error"
+    elif counter == count_num_in_card:  # 1 условие проверки для корректного ввода номера карты
+        card_or_account = "card"
+        if not user_input[0].isalpha() or user_input[0].isdigit():  # 2 условие проверки для ввода названия карты
+            raise ValueError("Пожалуйста, укажите название карты в начале")
+
+    elif counter != count_num_in_account and counter != count_num_in_card:
+        raise ValueError(f"Введено неверное количество цифр. "
+                         f"{count_num_in_card} - для карты и "
+                         f"{count_num_in_account} - для счета")
 
     return [card_or_account, counter]
 
@@ -51,6 +58,12 @@ def get_date(input_date: str) -> str:
     year: str = input_date[0:4]
     month: str = input_date[5:7]
     day: str = input_date[8:10]
+
+    if not year.isdigit() or not month.isdigit() or not day.isdigit():
+        raise ValueError("Проверьте формат и значение вводимых данных")
+
+    elif int(month) > 12 or int(month) < 1 or int(day) > 31 or int(day) < 1:
+        raise ValueError("Указаны неверные значения даты")
 
     date_format = f"{day}.{month}.{year}"
 
