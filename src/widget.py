@@ -21,7 +21,7 @@ def mask_account_card(user_input: str) -> str:
     return masked_account_card
 
 
-def account_or_card(user_input: str) -> list:
+def account_or_card(user_input: str) ->  list:
     """Функция определяющая, что введено - карта или счет и подсчет цифр во вводе"""
 
     card_or_account: str = ""
@@ -44,9 +44,11 @@ def account_or_card(user_input: str) -> list:
             raise ValueError("Пожалуйста, укажите название карты в начале")
 
     elif counter != count_num_in_account and counter != count_num_in_card:
-        raise ValueError(f"Введено неверное количество цифр. "
-                         f"{count_num_in_card} - для карты и "
-                         f"{count_num_in_account} - для счета")
+        raise ValueError(
+            f"Введено неверное количество цифр. "
+            f"{count_num_in_card} - для карты и "
+            f"{count_num_in_account} - для счета"
+        )
 
     return [card_or_account, counter]
 
