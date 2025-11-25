@@ -21,7 +21,7 @@ def mask_account_card(user_input: str) -> str:
     return masked_account_card
 
 
-def account_or_card(user_input: str) ->  list:
+def account_or_card(user_input: str) -> list:
     """Функция определяющая, что введено - карта или счет и подсчет цифр во вводе"""
 
     card_or_account: str = ""
