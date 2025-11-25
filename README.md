@@ -13,3 +13,9 @@
 ## Модуль processing.py 
 - фильтр данных по состоянию
 - сортировка данных по дате
+
+## Созданы тестовые файлы:
+- conftest.py (для общих фикстур)
+- test_masks.py
+- test_processing.py
+- test_widget.py
