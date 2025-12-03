@@ -22,7 +22,7 @@
 - декоратор логов
 
 ## Созданы тестовые файлы:
-- conftest.py (для общих фикстур)
+- conftest.py (для общих микстур)
 - test_masks.py
 - test_processing.py
 - test_widget.py
