@@ -18,9 +18,13 @@
 - фильтр транзакций по валюте
 - формирует список названий всех транзакций
 
+## Модуль decorators.py 
+- декоратор логов
+
 ## Созданы тестовые файлы:
 - conftest.py (для общих фикстур)
 - test_masks.py
 - test_processing.py
 - test_widget.py
 - test_generators.py
+- test_decorators.py
