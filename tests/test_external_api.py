@@ -13,27 +13,33 @@ API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_к�
 
 # Тест с ошибкой при вводе валюты
 def test_converter_currency_err_cur(capsys):
-    converter_currency(1000, "qq")
+    converter_currency({"money": 1000,
+                        "currency": "SD"
+                        })
     captured = capsys.readouterr()
     assert captured.out == "Такой валюты нет в списке\n"
 
 
 # Тест с ошибкой при вводе суммы транзакции
 def test_converter_currency_err_trans(capsys):
-    converter_currency([1000], "USD")
+    converter_currency({"money": {1000},
+                        "currency": "USD"
+                        })
     captured = capsys.readouterr()
     assert captured.out == "Введена неверная сумма транзакции\n"
 
 
-# Тест где мокаем АПИ
+# Тест где патчим АПИ
 @patch("requests.request")
 def test_converter_currency(mock_get):
     mock_get.return_value.json.return_value = {"result": 5}
     mock_get.return_value.status_code = 200
-    assert converter_currency(8, "USD") == 5
+    assert converter_currency({"money": 1000,
+                               "currency": "USD"
+                               }) == 5
     mock_get.assert_called_once_with(
         "GET",
-        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=8",
+        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=1000",
         headers={"apikey": API_KEY},
         data={},
     )

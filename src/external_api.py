@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import requests
 
 
-def converter_currency(transaction: float, currency: str) -> float:
+def converter_currency(my_transaction: dict) -> float:
     """Конвертер валюты в рубли через API"""
 
     current_dir = os.path.dirname(__file__)  # Получаем путь к текущей директории проекта
@@ -11,22 +11,25 @@ def converter_currency(transaction: float, currency: str) -> float:
     load_dotenv(file_path)  # запускаем файл .env
     API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_ключ
 
+    money: float = my_transaction["money"]
+    currency: str = my_transaction["currency"]
+
     # блок отвечающий за ошибки до вызова функции
     currency_to_convert = ["USD", "EUR"]  # допустимые валюты для ввода
-    if not isinstance(transaction, (int, float)):  # Условие ввода транзакции
+    if not isinstance(money, (int, float)):  # Условие ввода транзакции
         print("Введена неверная сумма транзакции")
         return False
 
-    elif currency not in currency_to_convert:  # условие ввода валюты
+    elif my_transaction["currency"] not in currency_to_convert:  # условие ввода валюты
         print("Такой валюты нет в списке")
         return False
 
     else:
         # запускаем готовый апи запрос
-        url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency}&amount={transaction}"
+        url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency}&amount={money}"
 
-        payload:dict = {}
-        headers:dict = {"apikey": API_KEY}
+        payload: dict = {}
+        headers: dict = {"apikey": API_KEY}
 
         response = requests.request("GET", url, headers=headers, data=payload)
 
@@ -39,4 +42,6 @@ def converter_currency(transaction: float, currency: str) -> float:
 
 
 if __name__ == "__main__":
-    print(converter_currency(1000, "USD"))
+    print(converter_currency({"money": 1000,
+                              "currency": "USD"
+                              }))

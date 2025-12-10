@@ -1,3 +1,5 @@
+import json
+
 from src.utils import create_list_of_operations
 import pytest
 import os
@@ -114,10 +116,10 @@ def my_transactions() -> list:
 
 
 # Тест списка словарей с данными о транзакциях
-def test_create_list_of_operations(my_transactions:list) -> list:
+def test_create_list_of_operations(my_transactions: list) -> list:
     assert (
-        create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "operations.json"))
-        == my_transactions
+            create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "operations.json"))
+            == my_transactions
     )
 
 
@@ -133,3 +135,13 @@ def test_create_list_of_operations_empty(capsys):
     create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "empty.json"))
     captured = capsys.readouterr()
     assert captured.out == "Ошибка декодирования\n"
+
+
+from unittest.mock import Mock
+
+
+def test_create_list_of_operations_2():
+    my_mock = Mock(return_value=[{"description": "Взятка"}, {"description": "Зарплата"}])
+    json.load = my_mock
+    assert create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "empty.json")) == [
+        {"description": "Взятка"}, {"description": "Зарплата"}]
