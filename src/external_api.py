@@ -12,10 +12,14 @@ def converter_currency(my_transaction: dict) -> float:
     load_dotenv(file_path)  # запускаем файл .env
     API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_ключ
 
-    start_amount: float = my_transaction["operationAmount"]["amount"]
+    start_amount: str = my_transaction["operationAmount"]["amount"]
     currency_code: str = my_transaction["operationAmount"]["currency"]["code"]
 
     # блок отвечающий за ошибки до вызова функции
+
+    if currency_code == "RUB":
+        return float(start_amount)
+
     currency_to_convert = ["USD", "EUR"]  # допустимые валюты для ввода
     try:
         value = float(start_amount)
@@ -25,11 +29,10 @@ def converter_currency(my_transaction: dict) -> float:
     if currency_code not in currency_to_convert:
         raise ValueError("Код валюты не поддерживается")
 
-    if currency_code == "RUB":
-        return float(start_amount)
+
 
     # запускаем готовый апи запрос
-    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency_code}&amount={start_amount}"
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency_code}&amount={value}"
 
     payload: dict = {}
     headers: dict = {"apikey": API_KEY}
