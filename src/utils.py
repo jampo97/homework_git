@@ -17,8 +17,8 @@ def create_list_of_operations(source_to_operations: str) -> list:
         print("Файл не найден")
         return list_of_operations
 
-    list_of_operations = [{"description": operation.get("description")} for operation in data]
-    # list_of_operations = [operation for operation in data]
+    # list_of_operations = [{"description": operation.get("description")} for operation in data]
+    list_of_operations = [operation for operation in data]
 
     return list_of_operations
 

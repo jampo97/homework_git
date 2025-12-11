@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
+
 import requests
+from dotenv import load_dotenv
 
 
 def converter_currency(my_transaction: dict) -> float:
@@ -11,37 +12,48 @@ def converter_currency(my_transaction: dict) -> float:
     load_dotenv(file_path)  # запускаем файл .env
     API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_ключ
 
-    money: float = my_transaction["money"]
-    currency: str = my_transaction["currency"]
+    start_amount: float = my_transaction["operationAmount"]["amount"]
+    currency_code: str = my_transaction["operationAmount"]["currency"]["code"]
 
     # блок отвечающий за ошибки до вызова функции
     currency_to_convert = ["USD", "EUR"]  # допустимые валюты для ввода
-    if not isinstance(money, (int, float)):  # Условие ввода транзакции
-        print("Введена неверная сумма транзакции")
-        return False
+    try:
+        value = float(start_amount)
+    except ValueError:
+        raise ValueError("Некорректная сумма транзакции: невозможно преобразовать в число")
 
-    elif my_transaction["currency"] not in currency_to_convert:  # условие ввода валюты
-        print("Такой валюты нет в списке")
-        return False
+    if currency_code not in currency_to_convert:
+        raise ValueError("Код валюты не поддерживается")
 
-    else:
-        # запускаем готовый апи запрос
-        url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency}&amount={money}"
+    if currency_code == "RUB":
+        return float(start_amount)
 
-        payload: dict = {}
-        headers: dict = {"apikey": API_KEY}
+    # запускаем готовый апи запрос
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency_code}&amount={start_amount}"
 
-        response = requests.request("GET", url, headers=headers, data=payload)
+    payload: dict = {}
+    headers: dict = {"apikey": API_KEY}
 
-        # проверка на ошибки запроса
-        if response.status_code != 200:
-            print(f"Ошибка запроса : {response.status_code}")
-            return False
-        amount: float = round(response.json()["result"], 2)
-        return amount
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    # проверка на ошибки запроса
+    if response.status_code != 200:
+        raise ValueError(f"Ошибка запроса : {response.status_code}")
+    amount: float = round(response.json()["result"], 2)
+    return amount
 
 
 if __name__ == "__main__":
-    print(converter_currency({"money": 1000,
-                              "currency": "USD"
-                              }))
+    print(converter_currency({
+        "id": 580054042,
+        "state": "EXECUTED",
+        "date": "2018-06-20T03:59:34.851630",
+        "operationAmount": {
+            "amount": "12334",
+            "currency": {
+                "name": "USD",
+                "code": "RUB"
+            }
+        }}
+    )
+    )

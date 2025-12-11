@@ -1,126 +1,8 @@
 import json
+import os
+from unittest.mock import Mock
 
 from src.utils import create_list_of_operations
-import pytest
-import os
-
-
-@pytest.fixture()
-def my_transactions() -> list:
-    return [
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод со счета на счет"},
-        {"description": None},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод с карты на карту"},
-        {"description": "Перевод организации"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод организации"},
-        {"description": "Открытие вклада"},
-        {"description": "Перевод со счета на счет"},
-        {"description": "Перевод с карты на счет"},
-    ]
-
-
-# Тест списка словарей с данными о транзакциях
-
-
-# Тест списка словарей с данными о транзакциях
-def test_create_list_of_operations(my_transactions: list) -> list:
-    assert (
-            create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "operations.json"))
-            == my_transactions
-    )
 
 
 # Тест если файл не найден
@@ -137,10 +19,9 @@ def test_create_list_of_operations_empty(capsys):
     assert captured.out == "Ошибка декодирования\n"
 
 
-from unittest.mock import Mock
+# Тест списка словарей с данными о транзакциях (замоканный)
 
-
-def test_create_list_of_operations_2():
+def test_create_list_of_operations():
     my_mock = Mock(return_value=[{"description": "Взятка"}, {"description": "Зарплата"}])
     json.load = my_mock
     assert create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "empty.json")) == [
