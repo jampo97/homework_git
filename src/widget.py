@@ -6,7 +6,7 @@ from src.masks import get_mask_account, get_mask_card_number
 my_logger = logging.getLogger("widget")
 my_logger.setLevel(logging.INFO)
 log_filename = os.path.join(os.path.dirname(__file__), "..", "logs", "widget.log")
-file_handler = logging.FileHandler(log_filename, 'w', encoding="utf-8")
+file_handler = logging.FileHandler(log_filename, "w", encoding="utf-8")
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s : %(message)s")
 file_handler.setFormatter(file_formatter)
 my_logger.addHandler(file_handler)
@@ -31,7 +31,6 @@ def account_or_card(user_input: str) -> list:
             my_logger.error("Ошибка - ValueError /Пожалуйста, укажите слово __Счет__ в начале/")
             raise ValueError("Пожалуйста, укажите слово __Счет__ в начале")
 
-
     elif counter == count_num_in_card:  # 1 условие проверки для корректного ввода номера карты
         card_or_account = "card"
         if not user_input[0].isalpha() or user_input[0].isdigit():  # 2 условие проверки для ввода названия карты
@@ -39,9 +38,11 @@ def account_or_card(user_input: str) -> list:
             raise ValueError("Пожалуйста, укажите название карты в начале")
 
     elif counter != count_num_in_account and counter != count_num_in_card:
-        my_logger.error(f"Ошибка - ValueError /Введено неверное количество цифр."
-                        f"{count_num_in_card} - для карты и "
-                        f"{count_num_in_account} - для счета")
+        my_logger.error(
+            f"Ошибка - ValueError /Введено неверное количество цифр."
+            f"{count_num_in_card} - для карты и "
+            f"{count_num_in_account} - для счета"
+        )
         raise ValueError(
             f"Введено неверное количество цифр. "
             f"{count_num_in_card} - для карты и "

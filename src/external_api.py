@@ -29,8 +29,6 @@ def converter_currency(my_transaction: dict) -> float:
     if currency_code not in currency_to_convert:
         raise ValueError("Код валюты не поддерживается")
 
-
-
     # запускаем готовый апи запрос
     url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={currency_code}&amount={value}"
 
@@ -47,16 +45,13 @@ def converter_currency(my_transaction: dict) -> float:
 
 
 if __name__ == "__main__":
-    print(converter_currency({
-        "id": 580054042,
-        "state": "EXECUTED",
-        "date": "2018-06-20T03:59:34.851630",
-        "operationAmount": {
-            "amount": "12334",
-            "currency": {
-                "name": "USD",
-                "code": "RUB"
+    print(
+        converter_currency(
+            {
+                "id": 580054042,
+                "state": "EXECUTED",
+                "date": "2018-06-20T03:59:34.851630",
+                "operationAmount": {"amount": "12334", "currency": {"name": "USD", "code": "RUB"}},
             }
-        }}
-    )
+        )
     )
