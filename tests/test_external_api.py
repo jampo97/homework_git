@@ -15,36 +15,29 @@ API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_к�
 # Тест с ошибкой при вводе валюты
 def test_converter_currency_err_cur():
     with pytest.raises(ValueError) as no_cur:
-        converter_currency({
-        "id": 580054042,
-        "state": "EXECUTED",
-        "date": "2018-06-20T03:59:34.851630",
-        "operationAmount": {
-            "amount": "12334",
-            "currency": {
-                "name": "USD",
-                "code": "UD"
-            }}})
+        converter_currency(
+            {
+                "id": 580054042,
+                "state": "EXECUTED",
+                "date": "2018-06-20T03:59:34.851630",
+                "operationAmount": {"amount": "12334", "currency": {"name": "USD", "code": "UD"}},
+            }
+        )
     assert str(no_cur.value) == "Код валюты не поддерживается"
 
 
 # Тест с ошибкой при вводе суммы транзакции
 def test_converter_currency_err_trans():
-
     with pytest.raises(ValueError) as no_cur:
-        converter_currency({
-        "id": 580054042,
-        "state": "EXECUTED",
-        "date": "2018-06-20T03:59:34.851630",
-        "operationAmount": {
-            "amount": "abc",
-            "currency": {
-                "name": "USD",
-                "code": "USD"
-            }}})
+        converter_currency(
+            {
+                "id": 580054042,
+                "state": "EXECUTED",
+                "date": "2018-06-20T03:59:34.851630",
+                "operationAmount": {"amount": "abc", "currency": {"name": "USD", "code": "USD"}},
+            }
+        )
     assert str(no_cur.value) == "Некорректная сумма транзакции: невозможно преобразовать в число"
-
-
 
 
 # Тест где патчим АПИ
@@ -52,17 +45,17 @@ def test_converter_currency_err_trans():
 def test_converter_currency(mock_get):
     mock_get.return_value.json.return_value = {"result": 5}
     mock_get.return_value.status_code = 200
-    assert converter_currency({
-        "id": 580054042,
-        "state": "EXECUTED",
-        "date": "2018-06-20T03:59:34.851630",
-        "operationAmount": {
-            "amount": "1000",
-            "currency": {
-                "name": "USD",
-                "code": "USD"
+    assert (
+        converter_currency(
+            {
+                "id": 580054042,
+                "state": "EXECUTED",
+                "date": "2018-06-20T03:59:34.851630",
+                "operationAmount": {"amount": "1000", "currency": {"name": "USD", "code": "USD"}},
             }
-        }}) == 5
+        )
+        == 5
+    )
     mock_get.assert_called_once_with(
         "GET",
         "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=1000",

@@ -21,8 +21,11 @@ def test_create_list_of_operations_empty(capsys):
 
 # Тест списка словарей с данными о транзакциях (замоканный)
 
+
 def test_create_list_of_operations():
     my_mock = Mock(return_value=[{"description": "Взятка"}, {"description": "Зарплата"}])
     json.load = my_mock
     assert create_list_of_operations(os.path.join(os.path.dirname(__file__), "..", "data", "empty.json")) == [
-        {"description": "Взятка"}, {"description": "Зарплата"}]
+        {"description": "Взятка"},
+        {"description": "Зарплата"},
+    ]

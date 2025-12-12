@@ -22,6 +22,7 @@ def get_mask_card_number(user_input_card_number: str) -> str:
     try:
         int(user_input_card_number)
     except ValueError:
+        my_logger.error("Ошибка - ValueError. Введены лишние символы. нужно только номер карты")
         raise ValueError("Введены лишние символы. нужно только номер карты")
 
     for num in user_input_card_number:
@@ -55,6 +56,7 @@ def get_mask_account(user_input_account: str) -> str:
     try:
         int(user_input_account)
     except ValueError:
+        my_logger.error("Ошибка - ValueError. Введены лишние символы. нужно только номер счета")
         raise ValueError("Введены лишние символы. нужно только номер счета")
 
     for num in user_input_account:
