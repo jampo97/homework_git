@@ -1,7 +1,7 @@
 # Проект - homework
 
 ## Проект представляет собой работу с Git и включает в себя выполненные работы по урокам:
-## 9.2, 10.1, 10.2, 11.1, 12.1, 12.2
+## 9.2, 10.1, 10.2, 11.1, 12.1, 12.2, 13.1
 
 ## Модуль widget.py 
 - маскирует введенные данные
@@ -28,8 +28,11 @@
 ## Модуль external_api.py 
 - Конвертер валюты в рубли через API
 
+## Модуль csv_excel_reader.py 
+- Считывание данных транзакций из csv и excel и составление списка
+
 ## Созданы тестовые файлы:
-- conftest.py (для общих микстур)
+- conftest.py (для общих фикстур)
 - test_masks.py
 - test_processing.py
 - test_widget.py
@@ -37,5 +40,6 @@
 - test_decorators.py
 - test_utils.py
 - test_external_api.py
+- test_csv_excel_reader.py
 
 ## К файлам utils.py, masks.py, widget.py написаны логи в папке logs

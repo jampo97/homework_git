@@ -13,7 +13,7 @@ API_KEY = os.getenv("API_KEY")  # В файле .env забираем апи_к�
 
 
 # Тест с ошибкой при вводе валюты
-def test_converter_currency_err_cur():
+def test_converter_currency_err_cur() -> None:
     with pytest.raises(ValueError) as no_cur:
         converter_currency(
             {
@@ -27,7 +27,7 @@ def test_converter_currency_err_cur():
 
 
 # Тест с ошибкой при вводе суммы транзакции
-def test_converter_currency_err_trans():
+def test_converter_currency_err_trans() -> None:
     with pytest.raises(ValueError) as no_cur:
         converter_currency(
             {
@@ -58,7 +58,7 @@ def test_converter_currency(mock_get):
     )
     mock_get.assert_called_once_with(
         "GET",
-        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=1000",
+        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=1000.0",
         headers={"apikey": API_KEY},
         data={},
     )
