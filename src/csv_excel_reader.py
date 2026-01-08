@@ -2,6 +2,7 @@ import os
 import zipfile
 from datetime import datetime
 
+import pandas
 import pandas as pd
 from pandas import DataFrame, Series
 from pandas.errors import EmptyDataError
@@ -39,7 +40,6 @@ def excel_reader(source_to_operations: str) -> list[dict]:
         raise FileNotFoundError("Файл не найден")
     except zipfile.BadZipFile:
         raise zipfile.BadZipFile("Файл не открывается")
-
     search_empty_row(df_all)  # поиск и удаление пустых строк
 
     for x in range(len(df_all)):  # запускаем цикл преобразования таблицы в список словарей
@@ -51,18 +51,31 @@ def excel_reader(source_to_operations: str) -> list[dict]:
 
 def to_dict_type(transaction: Series) -> dict:
     """Функция преобразования строки датафрейма в словарь"""
-    my_dict = {
-        "id": str(transaction["id"]),
-        "state": str(transaction["state"]),
-        "date": str(transaction["date"]),
-        "operationAmount": {
-            "amount": str(transaction["amount"]),
-            "currency": {"name": str(transaction["currency_name"]), "code": str(transaction["currency_code"])},
-        },
-        "description": str(transaction["description"]),
-        "from": str(transaction["from"]),
-        "to": str(transaction["to"]),
-    }
+    if pandas.isna(transaction["from"]):
+        my_dict = {
+            "id": str(transaction["id"]),
+            "state": str(transaction["state"]),
+            "date": str(transaction["date"]),
+            "operationAmount": {
+                "amount": str(transaction["amount"]),
+                "currency": {"name": str(transaction["currency_name"]), "code": str(transaction["currency_code"])},
+            },
+            "description": str(transaction["description"]),
+            "to": str(transaction["to"]),
+        }
+    else:
+        my_dict = {
+            "id": str(transaction["id"]),
+            "state": str(transaction["state"]),
+            "date": str(transaction["date"]),
+            "operationAmount": {
+                "amount": str(transaction["amount"]),
+                "currency": {"name": str(transaction["currency_name"]), "code": str(transaction["currency_code"])},
+            },
+            "description": str(transaction["description"]),
+            "from": str(transaction["from"]),
+            "to": str(transaction["to"]),
+        }
     return my_dict
 
 
