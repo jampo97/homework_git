@@ -61,9 +61,15 @@ def dict_to_list(my_dict: dict) -> list[str]:
     return finder_list
 
 
-def process_bank_operations(data: list[dict]) -> dict:
+def process_bank_operations(data: list[dict], categories=None) -> dict:
     """Счетчик категорий операций"""
-    descriptions = [transaction.get("description") for transaction in data]
+
+    if categories is None:
+        categories = ["Перевод организации", "Открытие вклада", "Перевод со счета на счет", "Перевод с карты на карту",
+                      "Перевод с карты на счет"]
+
+    descriptions = [transaction.get("description") for transaction in data if
+                    transaction.get("description") in categories]
     new_dict = dict(Counter(descriptions))
     return new_dict
 

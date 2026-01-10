@@ -1,7 +1,7 @@
 import os
 
 from src.csv_excel_reader import csv_reader, excel_reader
-from src.utils import create_list_of_operations, process_bank_operations
+from src.utils import create_list_of_operations, process_bank_operations, process_bank_search
 from src.widget import mask_account_card
 
 
@@ -123,10 +123,13 @@ def description_filter(filtered_data_2: list[dict]) -> list[dict]:
         )
         if user_input == "Y":
             user_input = input("Программа: Введите слово\n" "Пользователь: ")
-            if user_input in ", ".join(process_bank_operations(filtered_data_2)):
-                filtered_data_3 = list(
-                    filter(lambda transaction: user_input in transaction["description"], filtered_data_2)
-                )
+            if user_input in ", ".join(process_bank_operations(filtered_data_2,
+                                                               ["Перевод организации", "Открытие вклада",
+                                                                "Перевод со счета на счет",
+                                                                "Перевод с карты на карту",
+                                                                "Перевод с карты на счет"])):
+                filtered_data_3 = process_bank_search(filtered_data_2, user_input)
+
                 print(f"Список транзакций отфильтрован по слову {user_input}")
                 return filtered_data_3
             else:
@@ -139,11 +142,13 @@ def description_filter(filtered_data_2: list[dict]) -> list[dict]:
 
 def summary(filtered_data_3: list[dict]):
     """Итого"""
-
-    print(
-        "Программа: Распечатываю итоговый список транзакций...\n"
-        f"Программа:Всего банковских операций в выборке: {len(filtered_data_3)}\n"
-    )
+    if len(filtered_data_3) == 0:
+        print("Программа: Не найдено ни одной транзакции, подходящей под ваши условия фильтрации.")
+    else:
+        print(
+            "Программа: Распечатываю итоговый список транзакций...\n"
+            f"Программа:Всего банковских операций в выборке: {len(filtered_data_3)}\n"
+        )
     for transaction in filtered_data_3:
         print(transaction["date"] + " " + transaction["description"])  # дата и описание транзакции
         if "from" in transaction:  # Условие наличия отправителя
