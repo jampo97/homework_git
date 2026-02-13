@@ -9,7 +9,7 @@ def get_mask_card_number(user_input_card_number: str) -> str:
 
     for num in user_input_card_number:
 
-        if counter % 4 == 0:  # ставим разделитель через 4 знака
+        if counter > 3 and counter % 4 == 0:  # ставим разделитель через 4 знака
             masked_card_number += " "
 
         counter += 1
